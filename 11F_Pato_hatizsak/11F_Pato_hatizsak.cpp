@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 int main()
@@ -23,10 +24,12 @@ int main()
     /**/
     // elsõ sor feltöltése: ha belefér az elsõ tárgy a hátizsákba, akkor bevesszük, egyébként meg nem.
     for (size_t j = 0; j < K; j++)
-        m[0][j] = suly[0] <= K ? ertek[0] : 0;
+        m[0][j] = suly[0] <= j ? ertek[0] : 0;
     /**/
 
     /**/
+
+
 
     // második sortól az összes
     for (int i = 1; i < N; i++)
@@ -35,22 +38,13 @@ int main()
         {
             // össze kell hasonlítani az új tárgy adta lehetõségeket a tárgy nélküli (elõzõ sor! i-1!) lehetõségekkel
             // m[i-1] // tárgy nélküli lehetõség
-//          m[i][j] = 0 > j - suly[i] ? m[i - 1][j] : (m[i - 1][j - suly[i]] < m[i - 1][j]? m[i - 1][j]: m[i - 1][j - suly[i]]);
-            
-            if (0 <= j - suly[i])
+           
+            if (suly[i] <= j)
             {
-                //                cerr << "if: idaig eljutottam" << i << " " << j << " " << suly[i] << " j-suly[i] :" << j - suly[i];
-                cerr << (m[i - 1][j] < m[i - 1][j - suly[i]]);
-                if (m[i - 1][j] < m[i - 1][j - suly[i]])
-                {
-                    m[i][j] = m[i - 1][j - suly[i]];
-                }
-                else
-                    m[i][j] = m[i - 1][j];
+                m[i][j] = max(m[i - 1][j], ertek[i]+m[i - 1][j - suly[i]]);
             }
             else
             {
-  //              cerr << "else: idaig eljutottam" << i << j;
                 m[i][j] = m[i - 1][j];
             }
         }
